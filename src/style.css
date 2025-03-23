@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+}
+
+#container {
+    position: absolute;
+    padding: 2vh 2vw;
+    /* width: 100%;
+    height: 100%; */
+}
+
+#container h1 {
+    color: red;
+}
