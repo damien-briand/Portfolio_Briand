@@ -2,9 +2,9 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 /**
  * Load HDRI file and add to scene
- * @param {*} hdri_path 
- * @param {*} scene 
- * @param {*} renderer 
+ * @param {String} hdri_path 
+ * @param {THREE.Scene} scene 
+ * @param {THREE.WebGLRenderer} renderer 
  * @returns 
  */
 function HDRI_Loader(hdri_path, scene, renderer) {

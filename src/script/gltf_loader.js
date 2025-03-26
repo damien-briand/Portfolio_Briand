@@ -2,8 +2,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 /**
  * Load GLTF file and add to scene
- * @param {*} url 
- * @param {*} scene 
+ * @param {String} url 
+ * @param {THREE.Scene} scene 
  * @returns 
  */
 function loadGLTF(url, scene) {
