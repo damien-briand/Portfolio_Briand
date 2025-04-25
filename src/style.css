@@ -2,6 +2,26 @@ body {
     margin: 0;
 }
 
+/*------ NAV BAR ------*/
+.nav-bar-star {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.nav-bar-star img {
+    width: 8%;
+}
+
+#star-line {
+    width: inherit;
+    border-bottom: 0.5vb solid #000;
+    height: 0px;
+}
+
+/*------ SCROLLING BACKGROUND ------*/
 #container {
     position: absolute;
     padding: 2vh 2vw;
@@ -31,7 +51,7 @@ canvas {
     z-index: 10;
 }
 
-
+/*------ SCREEN TRANSITION ------*/
 #transition-screen {
     position: fixed;
     top: 0;

@@ -1,4 +1,5 @@
 import { scene001 } from "./scenes/001.js";
+import { intro_scene } from "./scenes/intro.js";
 
 const timeAnimation = 3000; 
 

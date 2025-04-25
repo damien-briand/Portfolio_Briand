@@ -1,0 +1,17 @@
+.nav-bar-star {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+}
+
+.nav-bar-star img {
+    width: 20%;
+}
+
+#star-line {
+    width: inherit;
+    border-bottom: 0.5vb solid #000;
+    height: 0px;
+}
