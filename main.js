@@ -3,7 +3,7 @@ import { intro_scene } from "./scenes/intro.js";
 import { hub_scene } from "./scenes/hub.js";
 
 const timeAnimationIntro = 6000;
-const timeAnimationHub = 3000;
+const timeAnimationHub = 5000;
 
 function transitionToIntro(callback) {
     if (callback) callback();

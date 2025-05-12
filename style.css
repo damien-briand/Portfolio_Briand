@@ -66,6 +66,18 @@ canvas {
     align-items: center;
     z-index: 100;
     overflow: hidden;
+    animation: screenOut 4s forwards;
+}
+@keyframes screenOut {
+    0% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 .bar {
@@ -78,12 +90,12 @@ canvas {
 
 .top-bar {
     top: 0;
-    animation: alternate-top 4s forwards;
+    animation: alternate-top 5s forwards;
 }
 
 .bottom-bar {
     bottom: 0;
-    animation: alternate-bottom 4s forwards;
+    animation: alternate-bottom 5s forwards;
 }
 
 @keyframes alternate-top {
@@ -103,8 +115,6 @@ canvas {
         transform: translateY(0%);
     }
 }
-
-
 
 .transition-text {
     color: #ffffff;
@@ -139,6 +149,19 @@ body {
 	flex-wrap: wrap;
 	flex-direction: column;
     z-index: 100;
+    animation: fadeOut 6s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 #load {

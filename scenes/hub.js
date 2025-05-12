@@ -72,7 +72,7 @@ async function hub_scene() {
 	composer.addPass(renderPass);
 
 	const effect1 = new ShaderPass(DotScreenShader);
-	effect1.uniforms["scale"].value = 5;
+	effect1.uniforms["scale"].value = 6;
 	composer.addPass(effect1);
 
 	const effect2 = new ShaderPass(RGBShiftShader);
@@ -93,12 +93,30 @@ async function hub_scene() {
 		composer.setSize(window.innerWidth, window.innerHeight);
 	}
 
+	let currentAngle = 0; // Angle actuel
+	let targetAngle = 0; // Angle cible
+	const rotationSpeed = 0.03; // Vitesse de l'animation
+
 	function animate() {
-		object.rotation.x += 0.005;
-		object.rotation.y += 0.005;
+		if (Math.abs(targetAngle - currentAngle) > 0.001) {
+			currentAngle += (targetAngle - currentAngle) * rotationSpeed;
+			rotationCameraReg(camera, currentAngle);
+		}
 
 		composer.render();
 	}
+
+	addEventListener("keypress", () => {
+		targetAngle += 0.5; // Augmente l'angle cible
+	});
+}
+
+function rotationCameraReg(camera, angle) {
+	const radius = 400; // Rayon de la rotation
+	camera.position.x = Math.sin(angle) * radius;
+	camera.position.z = Math.cos(angle) * radius;
+	camera.lookAt(0, 0, 0); // Oriente la caméra vers le centre
+	camera.updateProjectionMatrix();
 }
 
 export { hub_scene };
