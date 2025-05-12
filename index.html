@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Damien BRIAND</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div id="intro">
+            <div id="loading-screen">
+                <h1>CHARGEMENT . . .</h1>
+                <div id="load">
+                    <img src="/assets/img/star_start.png" alt="" />
+                    <div id="load-line"></div>
+                    <img src="/assets/img/star_end.png" alt="" />
+                </div>
+            </div>
+
+            <div id="scroll-content">
+                <h1>Cliquer sur le bouton blanc pour allumer l'ordinateur</h1>
+            </div>
+        </div>
+
+        <div id="hub">
+            <div id="transition-screen">
+                <div class="bar top-bar"></div>
+                <div id="transition-text-container">
+                    <h1 class="transition-text" style="color: #e40938;">BRIAND-</h1>
+                    <h1 class="transition-text">OS</h1>
+                </div>
+                <div class="bar bottom-bar"></div>
+            </div>
+            
+            <div class="nav-bar-star">
+                <img src="/assets/img/star_start.png" alt="" />
+                <div id="star-line"></div>
+                <img src="/assets/img/star_end.png" alt="" />
+            </div>
+            
+            <div id="scroll-content">
+                <h1>AH</h1>
+            </div>
+        </div>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/"
+                }
+            }
+        </script>
+        <script type="module" src="main.js"></script>
+    </body>
+</html>
