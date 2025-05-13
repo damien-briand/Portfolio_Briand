@@ -35,6 +35,20 @@ async function hub_scene() {
 	);
 	camera.position.z = 400;
 
+	// Interaction Mouse Declaration
+	let raycaster = new THREE.Raycaster();
+	let INTERSECTED;
+	let pointer = new THREE.Vector2();
+
+	let mouseX = 0;
+	let mouseY = 0;
+	window.addEventListener("mousemove", onMouseMouve);
+	function onMouseMouve(event) {
+		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+	}
+	//
+
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color(0xf5ebd6); // Orange
 	scene.fog = new THREE.Fog(0x000000, 1, 1000);
@@ -42,21 +56,15 @@ async function hub_scene() {
 	object = new THREE.Object3D();
 	scene.add(object);
 
-	const geometry = new THREE.SphereGeometry(1, 4, 4);
-	const material = new THREE.MeshPhongMaterial({
-		color: 0xf000f0,
-		flatShading: true,
-	});
+	const geometry = new THREE.BoxGeometry(50, 50, 50);
 
-	for (let i = 0; i < 100; i++) {
-		const mesh = new THREE.Mesh(geometry, material);
-		mesh.position
-			.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)
-			.normalize();
-		mesh.position.multiplyScalar(Math.random() * 400);
-		mesh.rotation.set(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-		mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 50;
-		object.add(mesh);
+	for (let i = 0; i < 5; i++) {
+		const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0xf000f0, flatShading: true,}));
+		// Met les cube en rond a 200 de rayon
+		const angle = (i / 5) * Math.PI * 2;
+		mesh.position.x = Math.cos(angle) * 200;
+		mesh.position.z = Math.sin(angle) * 200;
+		scene.add(mesh);
 	}
 
 	scene.add(new THREE.AmbientLight(0xcccccc));
@@ -83,7 +91,6 @@ async function hub_scene() {
 	composer.addPass(effect3);
 
 	//
-
 	window.addEventListener("resize", onWindowResize);
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -97,17 +104,35 @@ async function hub_scene() {
 	let targetAngle = 0; // Angle cible
 	const rotationSpeed = 0.03; // Vitesse de l'animation
 
+	let powerPCMesh;
+	let powerPCMeshMaterial;
+
 	function animate() {
 		if (Math.abs(targetAngle - currentAngle) > 0.001) {
 			currentAngle += (targetAngle - currentAngle) * rotationSpeed;
 			rotationCameraReg(camera, currentAngle);
+		}
+		raycaster.setFromCamera(pointer, camera);
+		const intersects = raycaster.intersectObjects(scene.children, true);
+
+		if ( intersects.length > 0 ) {
+			if ( INTERSECTED != intersects[ 0 ].object ) {
+				if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+				INTERSECTED = intersects[ 0 ].object;
+				INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+				INTERSECTED.material.emissive.setHex( 0xff0000 );
+			}
+		} else {
+			if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+			INTERSECTED = null;
 		}
 
 		composer.render();
 	}
 
 	addEventListener("keypress", () => {
-		targetAngle += 0.5; // Augmente l'angle cible
+		targetAngle += 1; // Augmente l'angle cible
 	});
 }
 

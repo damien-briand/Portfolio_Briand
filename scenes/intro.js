@@ -46,13 +46,13 @@ async function intro_scene() {
 	let scrollOffsetY = 0; // Variable pour stocker le décalage dû au scroll
 	let mouseFactor = 0.5; // Ajustez le facteur pour contrôler la distance
 	let mouseSpeed = 0.05; // Ajustez le facteur pour contrôler la vitesse
-	window.addEventListener("mousemove", (event) => {
-		// Normaliser les coordonnées de la souris entre -1 et 1
+	window.addEventListener("mousemove", onMouseMouve);
+	function onMouseMouve(event) {
 		mouseX = (event.clientX / window.innerWidth) * 2 - 1;
 		mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 		pointer.x = mouseX;
 		pointer.y = mouseY;
-	});
+	}
 
 	const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 	scene.add(ambientLight);
@@ -66,7 +66,7 @@ async function intro_scene() {
 	let model;
 	let mixer;
 	try {
-		model = await loadGLTF("../assets/Intro_Scene.glb", scene);
+		model = await loadGLTF("/Portfolio_Briand/assets/Intro_Scene.glb", scene);
 		model.traverse((child) => {
 			if (child.isMesh) {
 				model.receiveShadow = true;
@@ -114,6 +114,21 @@ async function intro_scene() {
 		composer.setSize(window.innerWidth, window.innerHeight);
 	}
 
+	document.addEventListener("click", onIntersect);
+	function onIntersect() {
+		console.log("click");
+		if (INTERSECTED.isMesh && INTERSECTED.name === "Power_PC") {
+			transitionToHUB(() => {
+				hub_scene();
+			});
+			document.removeEventListener("click", onIntersect);
+			window.removeEventListener("mousemove", onMouseMouve);
+		}
+	}
+
+	let powerPCMesh;
+	let powerPCMeshMaterial;
+
 	function animate() {
 		camera.position.x +=
 			(mouseX * mouseFactor - camera.position.x) * mouseSpeed;
@@ -123,9 +138,6 @@ async function intro_scene() {
 
 		raycaster.setFromCamera(pointer, camera);
 		const intersects = raycaster.intersectObjects(scene.children, true);
-
-		let powerPCMesh;
-		let powerPCMeshMaterial;
 
 		if (intersects.length > 0) {
 			if (INTERSECTED != intersects[0].object) {
@@ -147,15 +159,6 @@ async function intro_scene() {
 		//renderer.render(scene, camera);
 		composer.render();
 	}
-
-	document.addEventListener("click", () => {
-		console.log("click");
-		if (INTERSECTED.isMesh && INTERSECTED.name === "Power_PC") {
-			transitionToHUB(() => {
-				hub_scene();
-			});
-		}
-	});
 }
 
 export { intro_scene };
