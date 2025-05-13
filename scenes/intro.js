@@ -78,7 +78,7 @@ async function intro_scene() {
 		});
 		mixer = new THREE.AnimationMixer(model);
 	} catch (error) {
-		console.error("An error happened", error);
+		console.error("Fail to load GLTF : ", error);
 	}
 
 	const renderScene = new RenderPass(scene, camera);
