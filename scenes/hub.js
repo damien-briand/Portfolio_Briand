@@ -12,7 +12,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-import { DotScreenShader } from "/shaders/DotScreenShader.js";
+import { DotScreenShader } from "../shaders/DotScreenShader.js";
 import { loadGLTF } from "/script/gltf_loader.js";
 import { HDRI_Loader } from "/script/hdri_loader.js";
 

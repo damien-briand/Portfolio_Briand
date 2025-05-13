@@ -6,8 +6,8 @@ const timeAnimationIntro = 6000;
 const timeAnimationHub = 5000;
 
 function transitionToIntro(callback) {
-    if (callback) callback();
     document.getElementById("hub").style.display = "none";
+    if (callback) callback();
 
     setTimeout(() => {
         document.getElementById("loading-screen").style.display = "none";
@@ -15,7 +15,6 @@ function transitionToIntro(callback) {
 }
 
 function transitionToHUB(callback) {
-
     document.getElementById("hub").style.display = "flex";
     document.getElementById("intro").style.display = "none";
 
