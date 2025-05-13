@@ -13,8 +13,8 @@ import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 import { DotScreenShader } from "../shaders/DotScreenShader.js";
-import { loadGLTF } from "/script/gltf_loader.js";
-import { HDRI_Loader } from "/script/hdri_loader.js";
+import { loadGLTF } from "../script/gltf_loader.js";
+import { HDRI_Loader } from "../script/hdri_loader.js";
 
 async function hub_scene() {
 	let camera, renderer, composer, object;
