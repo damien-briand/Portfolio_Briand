@@ -17,9 +17,13 @@ import { loadGLTF } from "../script/gltf_loader.js";
 import { HDRI_Loader } from "../script/hdri_loader.js";
 
 async function hub_scene() {
-	let camera, renderer, composer, object;
+	let camera, object;
 
-	renderer = new THREE.WebGLRenderer();
+	let currentAngle = 0; // Angle actuel
+	let targetAngle = 0; // Angle cible
+	const rotationSpeed = 0.03; // Vitesse de l'animation
+
+	const renderer = new THREE.WebGLRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setAnimationLoop(animate);
@@ -33,7 +37,10 @@ async function hub_scene() {
 		1,
 		1000
 	);
-	camera.position.z = 400;
+	camera.position.z = 20;
+	camera.position.y = 4;
+
+	const composer = new EffectComposer(renderer);
 
 	// Interaction Mouse Declaration
 	let raycaster = new THREE.Raycaster();
@@ -52,19 +59,23 @@ async function hub_scene() {
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color(0xf5ebd6); // Orange
 	scene.fog = new THREE.Fog(0x000000, 1, 1000);
-
-	object = new THREE.Object3D();
-	scene.add(object);
-
-	const geometry = new THREE.BoxGeometry(50, 50, 50);
-
-	for (let i = 0; i < 5; i++) {
-		const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0xf000f0, flatShading: true,}));
-		// Met les cube en rond a 200 de rayon
-		const angle = (i / 5) * Math.PI * 2;
-		mesh.position.x = Math.cos(angle) * 200;
-		mesh.position.z = Math.sin(angle) * 200;
-		scene.add(mesh);
+	/* ---------- GLTF LOADER ---------- */
+	let model;
+	let mixer;
+	try {
+		model = await loadGLTF("/assets/OS_HUB_scene.glb", scene);
+		model.traverse((child) => {
+			if (child.isMesh) {
+				model.receiveShadow = true;
+				model.castShadow = true;
+			}
+			if (child.name === "Camera") {
+				camera = child;
+			}
+		});
+		mixer = new THREE.AnimationMixer(model);
+	} catch (error) {
+		console.error("An error happened", error);
 	}
 
 	scene.add(new THREE.AmbientLight(0xcccccc));
@@ -74,8 +85,6 @@ async function hub_scene() {
 	scene.add(light);
 
 	// postprocessing
-
-	composer = new EffectComposer(renderer);
 	const renderPass = new RenderPass(scene, camera);
 	composer.addPass(renderPass);
 
@@ -100,31 +109,29 @@ async function hub_scene() {
 		composer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	let currentAngle = 0; // Angle actuel
-	let targetAngle = 0; // Angle cible
-	const rotationSpeed = 0.03; // Vitesse de l'animation
-
 	let powerPCMesh;
 	let powerPCMeshMaterial;
 
 	function animate() {
-		if (Math.abs(targetAngle - currentAngle) > 0.001) {
+		if (Math.abs(targetAngle - currentAngle) > 0.01) {
 			currentAngle += (targetAngle - currentAngle) * rotationSpeed;
 			rotationCameraReg(camera, currentAngle);
 		}
 		raycaster.setFromCamera(pointer, camera);
 		const intersects = raycaster.intersectObjects(scene.children, true);
 
-		if ( intersects.length > 0 ) {
-			if ( INTERSECTED != intersects[ 0 ].object ) {
-				if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+		if (intersects.length > 0) {
+			if (INTERSECTED != intersects[0].object) {
+				if (INTERSECTED)
+					INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
 
-				INTERSECTED = intersects[ 0 ].object;
+				INTERSECTED = intersects[0].object;
 				INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-				INTERSECTED.material.emissive.setHex( 0xff0000 );
+				INTERSECTED.material.emissive.setHex(0xff0000);
 			}
 		} else {
-			if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+			if (INTERSECTED)
+				INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
 			INTERSECTED = null;
 		}
 
@@ -132,12 +139,12 @@ async function hub_scene() {
 	}
 
 	addEventListener("keypress", () => {
-		targetAngle += 1; // Augmente l'angle cible
+		targetAngle += 1.26; // Augmente l'angle cible
 	});
 }
 
 function rotationCameraReg(camera, angle) {
-	const radius = 400; // Rayon de la rotation
+	const radius = 20; // Rayon de la rotation
 	camera.position.x = Math.sin(angle) * radius;
 	camera.position.z = Math.cos(angle) * radius;
 	camera.lookAt(0, 0, 0); // Oriente la caméra vers le centre
