@@ -16,8 +16,17 @@ import { DotScreenShader } from "../shaders/DotScreenShader.js";
 import { loadGLTF } from "../script/gltf_loader.js";
 import { HDRI_Loader } from "../script/hdri_loader.js";
 
+const CUBE_NAME = [
+	"Cube003_3",
+	"Cube005_1",
+	"Cube089",
+	"Cube001_1",
+	"Cube038_1",
+];
+const MATERIAL_NAME = ["ME", "PROJECT", "COMP", "ETUDE", "CONTACT"];
+
 async function hub_scene() {
-	let camera, object;
+	let camera;
 
 	let currentAngle = 0; // Angle actuel
 	let targetAngle = 0; // Angle cible
@@ -38,7 +47,8 @@ async function hub_scene() {
 		1000
 	);
 	camera.position.z = 20;
-	camera.position.y = 4;
+	camera.position.y = 3;
+	camera.lookAt(0, 3, 0); // Oriente la caméra vers le centre
 
 	const composer = new EffectComposer(renderer);
 
@@ -47,8 +57,6 @@ async function hub_scene() {
 	let INTERSECTED;
 	let pointer = new THREE.Vector2();
 
-	let mouseX = 0;
-	let mouseY = 0;
 	window.addEventListener("mousemove", onMouseMouve);
 	function onMouseMouve(event) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -57,7 +65,7 @@ async function hub_scene() {
 	//
 
 	const scene = new THREE.Scene();
-	scene.background = new THREE.Color(0xf5ebd6); // Orange
+	scene.background = new THREE.Color(0x727790); // Orange
 	scene.fog = new THREE.Fog(0x000000, 1, 1000);
 	/* ---------- GLTF LOADER ---------- */
 	let model;
@@ -79,17 +87,16 @@ async function hub_scene() {
 	}
 
 	scene.add(new THREE.AmbientLight(0xcccccc));
-
-	const light = new THREE.DirectionalLight(0xffffff, 3);
-	light.position.set(1, 1, 1);
-	scene.add(light);
+	const gridHelper = new THREE.GridHelper(100, 50, 0xff0000, 0x00ff00);
+	gridHelper.position.y = -0.4;
+	scene.add(gridHelper);
 
 	// postprocessing
 	const renderPass = new RenderPass(scene, camera);
 	composer.addPass(renderPass);
 
 	const effect1 = new ShaderPass(DotScreenShader);
-	effect1.uniforms["scale"].value = 6;
+	effect1.uniforms["scale"].value = 10;
 	composer.addPass(effect1);
 
 	const effect2 = new ShaderPass(RGBShiftShader);
@@ -109,8 +116,59 @@ async function hub_scene() {
 		composer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	let powerPCMesh;
-	let powerPCMeshMaterial;
+	//const modal = document.getElementById("modal");
+	let modal = document.getElementById("ME");
+	const closeModalBtn = document.getElementsByClassName("closeModalBtn");
+	document.addEventListener("click", onBoxClick);
+	function onBoxClick() {
+		let findName = MATERIAL_NAME.find(
+			(name) => name === INTERSECTED.material.name
+		);
+		if (INTERSECTED.isMesh && findName != undefined) {
+			modal = document.getElementById(INTERSECTED.material.name);
+			modal.style.display = "block";
+		}
+	}
+
+	for (let i = 0; i < closeModalBtn.length; i++) {
+		closeModalBtn[i].addEventListener("click", () => {
+			modal.style.display = "none";
+		});
+	}
+
+	// Rendre la fenêtre modale déplaçable
+	const allModalsHeader = document.getElementsByClassName("modal-header");
+	let isDragging = false;
+	let offsetX, offsetY;
+
+	for (let i = 0; i < allModalsHeader.length; i++) {
+		allModalsHeader[i].addEventListener("mousedown", (e) => {
+			isDragging = true;
+			offsetX = e.clientX - modal.offsetLeft;
+			offsetY = e.clientY - modal.offsetTop;
+		});
+	}
+
+	document.addEventListener("mousemove", (e) => {
+		if (isDragging) {
+			modal.style.left = `${e.clientX - offsetX}px`;
+			modal.style.top = `${e.clientY - offsetY}px`;
+		}
+	});
+
+	document.addEventListener("mouseup", () => {
+		isDragging = false;
+	});
+
+	const buttonMenu = document.getElementById("menu-button");
+	buttonMenu.addEventListener("click", () => {
+		const osMenu = document.getElementById("os-menu");
+		if (osMenu.style.display === "none" || osMenu.style.display === "") {
+			osMenu.style.display = "block";
+		} else {
+			osMenu.style.display = "none";
+		}
+	});
 
 	function animate() {
 		if (Math.abs(targetAngle - currentAngle) > 0.01) {
@@ -122,24 +180,32 @@ async function hub_scene() {
 
 		if (intersects.length > 0) {
 			if (INTERSECTED != intersects[0].object) {
-				if (INTERSECTED)
+				if (INTERSECTED && INTERSECTED.isMesh)
 					INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
 
 				INTERSECTED = intersects[0].object;
-				INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-				INTERSECTED.material.emissive.setHex(0xff0000);
+				let findName = MATERIAL_NAME.find(
+					(name) => name === INTERSECTED.material.name
+				);
+				if (findName != undefined) {
+					document.body.style.cursor = "pointer";
+					INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+					INTERSECTED.material.emissive.setHex(0xffffff);
+				}
 			}
 		} else {
-			if (INTERSECTED)
+			if (INTERSECTED && INTERSECTED.isMesh) {
+				document.body.style.cursor = "auto";
 				INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
-			INTERSECTED = null;
+				INTERSECTED = null;
+			}
 		}
 
 		composer.render();
 	}
 
 	addEventListener("keypress", () => {
-		targetAngle += 1.26; // Augmente l'angle cible
+		targetAngle += 0.4 * Math.PI; // Augmente l'angle cible
 	});
 }
 
@@ -147,7 +213,7 @@ function rotationCameraReg(camera, angle) {
 	const radius = 20; // Rayon de la rotation
 	camera.position.x = Math.sin(angle) * radius;
 	camera.position.z = Math.cos(angle) * radius;
-	camera.lookAt(0, 0, 0); // Oriente la caméra vers le centre
+	camera.lookAt(0, 3, 0); // Oriente la caméra vers le centre
 	camera.updateProjectionMatrix();
 }
 

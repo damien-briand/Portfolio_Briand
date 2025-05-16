@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Styles pour la fenêtre modale */
+        .modal {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 300px;
+            height: 200px;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .modal-header {
+            background-color: #f1f1f1;
+            padding: 10px;
+            cursor: move;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 10px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Styles pour le bouton */
+        #openModalBtn {
+            margin: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="openModalBtn">Ouvrir la fenêtre</button>
+
+    <div id="modal" class="modal">
+        <div class="modal-header">
+            <span>Fenêtre</span>
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+        </div>
+        <div class="modal-body">
+            Contenu de la fenêtre.
+        </div>
+    </div>
+
+<script>
+    const modal = document.getElementById('modal');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    // Fonction pour centrer la fenêtre modale
+    function centerModal() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const modalWidth = modal.offsetWidth;
+        const modalHeight = modal.offsetHeight;
+
+        modal.style.left = `${(windowWidth - modalWidth) / 2}px`;
+        modal.style.top = `${(windowHeight - modalHeight) / 2}px`;
+    }
+
+    // Ouvrir la fenêtre modale
+    openModalBtn.addEventListener('click', () => {
+        centerModal(); // Centrer la fenêtre avant de l'afficher
+        modal.style.display = 'block';
+    });
+
+    // Fermer la fenêtre modale
+    closeModalBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Rendre la fenêtre modale déplaçable
+    const modalHeader = modal.querySelector('.modal-header');
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    modalHeader.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - modal.offsetLeft;
+        offsetY = e.clientY - modal.offsetTop;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            modal.style.left = `${e.clientX - offsetX}px`;
+            modal.style.top = `${e.clientY - offsetY}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+</script>
+</body>
+</html>

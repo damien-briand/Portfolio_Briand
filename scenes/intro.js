@@ -74,6 +74,8 @@ async function intro_scene() {
 			}
 			if (child.name === "Camera") {
 				camera = child;
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 			}
 		});
 		mixer = new THREE.AnimationMixer(model);
@@ -98,6 +100,7 @@ async function intro_scene() {
 	const outputPass = new OutputPass();
 
 	const composer = new EffectComposer(renderer);
+	composer.setSize(window.innerWidth, window.innerHeight);
 	composer.addPass(renderScene);
 	composer.addPass(bloomPass);
 	composer.addPass(ssaoPass);

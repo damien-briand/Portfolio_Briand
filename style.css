@@ -1,134 +1,133 @@
 body {
-    margin: 0;
+	margin: 0;
 }
 
 /*------ NAV BAR ------*/
 .nav-bar-star {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 1em;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	margin-bottom: 1em;
 }
 
 .nav-bar-star img {
-    width: 10%;
+	width: 6%;
 }
 
-#star-line {
-    width: inherit;
-    border-bottom: 0.4em solid #e00000;
-    height: 0px;
+.star-line {
+	width: inherit;
+	border-bottom: 0.3em solid #e00000;
+	height: 0px;
 }
 
 /*------ SCROLLING BACKGROUND ------*/
 #container {
-    position: absolute;
-    padding: 2vh 2vw;
-    /* width: 100%;
+	position: absolute;
+	padding: 2vh 2vw;
+	/* width: 100%;
     height: 100%; */
 }
 
 canvas {
-    position: fixed;
-    z-index: -1;
+	position: fixed;
+	z-index: -1;
 }
 
 #scroll-content {
-    position: absolute;
-    width: 100%;
-    /* height: 400vh; Makes the page scrollable */
-    background: transparent;
+	position: absolute;
+	width: 100%;
+	/* height: 400vh; Makes the page scrollable */
+	background: transparent;
 }
 
 #scroll-content h1 {
-    margin-top: 2em;
-    color: rgb(27, 27, 27);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    top: 20px;
-    text-align: center;
-    font-size: 3rem;
-    z-index: 10;
+	margin-top: 2em;
+	color: rgb(27, 27, 27);
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	top: 20px;
+	text-align: center;
+	font-size: 3rem;
+	z-index: 10;
 }
 
 /*------ SCREEN TRANSITION ------*/
 #transition-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #e40938;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    overflow: hidden;
-    animation: screenOut 4s forwards;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #e40938;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	z-index: 100;
+	overflow: hidden;
+	animation: screenOut 4s forwards;
 }
 @keyframes screenOut {
-    0% {
-        opacity: 1;
-    }
-    70% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+	0% {
+		opacity: 1;
+	}
+	70% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .bar {
-    width: 100%;
-    height: 100%;
-    background: rgb(41, 41, 41);
-    position: absolute;
-    transition: transform 3s ease-in-out;
+	width: 100%;
+	height: 100%;
+	background: rgb(41, 41, 41);
+	position: absolute;
+	transition: transform 3s ease-in-out;
 }
 
 .top-bar {
-    top: 0;
-    animation: alternate-top 5s forwards;
+	top: 0;
+	animation: alternate-top 5s forwards;
 }
 
 .bottom-bar {
-    bottom: 0;
-    animation: alternate-bottom 5s forwards;
+	bottom: 0;
+	animation: alternate-bottom 5s forwards;
 }
 
 @keyframes alternate-top {
-    0% {
-        transform: translateY(-100%);
-    }
-    100%{
-        transform: translateY(0%);
-    }
+	0% {
+		transform: translateY(-100%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
 }
 
 @keyframes alternate-bottom {
-    0% {
-        transform: translateY(100%);
-    }
-    100%{
-        transform: translateY(0%);
-    }
+	0% {
+		transform: translateY(100%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
 }
 
 .transition-text {
-    color: #ffffff;
-    font-size: 3rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    z-index: 101;
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
+	color: #ffffff;
+	font-size: 3rem;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	z-index: 101;
+	opacity: 1;
+	transition: opacity 1s ease-in-out;
 }
 
 #transition-text-container {
-    display: flex;
+	display: flex;
 }
-
 
 /*------ LOADING SCREEN ------*/
 body {
@@ -136,7 +135,7 @@ body {
 }
 
 #hub {
-    display: none;
+	display: none;
 }
 
 #loading-screen {
@@ -152,39 +151,39 @@ body {
 	align-content: center;
 	flex-wrap: wrap;
 	flex-direction: column;
-    z-index: 100;
-    animation: fadeOut 6s forwards;
+	z-index: 100;
+	animation: fadeOut 6s forwards;
 }
 
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+	0% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 #load {
-    display: flex;
-    align-content: center;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    width: 0%;
-    animation: expandWidth 6s forwards;
+	display: flex;
+	align-content: center;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	width: 0%;
+	animation: expandWidth 6s forwards;
 }
 
 @keyframes expandWidth {
-    from {
-        width: 0%;
-    }
-    to {
-        width: 100%;
-    }
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
+	}
 }
 
 #load-line {
@@ -201,4 +200,50 @@ body {
 #loading-screen img {
 	width: 100px;
 	height: 100px;
+}
+
+/*------ MODAL ------*/
+.modal {
+	display: none;
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	width: 40rem;
+	height: 26rem;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	z-index: 1000;
+}
+
+.modal-header {
+	background-color: #f1f1f1;
+	padding: 10px;
+	cursor: move;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.modal-body {
+	padding: 10px;
+	display: flex;
+}
+
+.modal-body img {
+	width: 30%;
+	object-fit: contain;
+}
+
+.close-btn {
+	cursor: pointer;
+	color: red;
+	font-weight: bold;
+}
+
+/* Styles pour le bouton */
+#openModalBtn {
+	margin: 20px;
+	padding: 10px 20px;
+	cursor: pointer;
 }
