@@ -46,7 +46,7 @@ async function hub_scene() {
 		1,
 		1000
 	);
-	camera.position.z = 20;
+	camera.position.z = 21;
 	camera.position.y = 3;
 	camera.lookAt(0, 3, 0); // Oriente la caméra vers le centre
 
@@ -163,6 +163,7 @@ async function hub_scene() {
 	const buttonMenu = document.getElementById("menu-button");
 	buttonMenu.addEventListener("click", () => {
 		const osMenu = document.getElementById("os-menu");
+		console.log(osMenu.style.display);
 		if (osMenu.style.display === "none" || osMenu.style.display === "") {
 			osMenu.style.display = "block";
 		} else {
@@ -210,7 +211,7 @@ async function hub_scene() {
 }
 
 function rotationCameraReg(camera, angle) {
-	const radius = 20; // Rayon de la rotation
+	const radius = 21; // Rayon de la rotation
 	camera.position.x = Math.sin(angle) * radius;
 	camera.position.z = Math.cos(angle) * radius;
 	camera.lookAt(0, 3, 0); // Oriente la caméra vers le centre
