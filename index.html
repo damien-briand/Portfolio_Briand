@@ -17,6 +17,7 @@
 			}
 		</script>
 		<script type="module" src="main.js"></script>
+		<script type="module" src="/script/carrouselle.js"></script>
 
 		<div id="intro">
 			<div id="loading-screen">
@@ -69,9 +70,13 @@
 				</div>
 				<div class="modal-body">
 					<div style="display: contents">
-						<img src="/assets/img/me_picture.jpg" alt="ma photo" />
+						<img
+							src="/assets/img/me_picture.jpg"
+							alt="ma photo"
+							style="width: 35%"
+						/>
 					</div>
-					<div style="padding: 3%">
+					<div style="margin-left: 3%; font-size: 1.5rem">
 						<p>
 							Bonjour, je suis <strong>Damien BRIAND</strong>, j'ai
 							<span id="age"></span> ans
@@ -86,10 +91,10 @@
 						<p>Et future étudiant ingénieur a IMT Alès</p>
 						<p>
 							Je suis un amateur de modélisation 3D sur
-							<a href="https://www.blender.org/">Blender</a>.
-							Si vous voulez voir mes créations, 
-							vous pouver retrouver sur le bureau et cliquer sur le boitier rouge et noir
-							avec marquer dessus <strong>RaspBerryPI</strong>
+							<a href="https://www.blender.org/">Blender</a>. Si vous voulez
+							voir mes créations, vous pouver retrouver sur le bureau et cliquer
+							sur le boitier rouge et noir avec marquer dessus
+							<strong>RaspBerryPI</strong>
 						</p>
 						<p>
 							Je suis passionner de jeu vidéo, et je joue actuellement a
@@ -108,21 +113,36 @@
 				</div>
 				<div class="modal-body">
 					<div class="carrouselle">
-						<div>
-							<h2>Enigmatique</h2>
-							<p></p>
+						<div class="carrousel-items">
+							<div>
+								<h2>Enigmatique</h2>
+								<p>Le wati projet</p>
+								<div>
+									<img src="/assets/img/Laboratory.png" alt="">
+									<img src="/assets/img/Reactor.png" alt="">
+									<img src="/assets/img/Laboratory.png" alt="">
+								</div>
+							</div>
+							<div>
+								<h2>L'Incroyable Aventure a l'IUT2</h2>
+								<p></p>
+								<div>
+									
+								</div>
+							</div>
+							<div>
+								<h2>StaRace</h2>
+							</div>
+							<div>
+								<h2>ANIAH - Optimisation de structure de données en C</h2>
+							</div>
+							<div>
+								<h2>ST Microelectronics - Développeur IT</h2>
+							</div>
 						</div>
 						<div>
-							<h2>L'Incroyable Aventure a l'IUT2</h2>
-						</div>
-						<div>
-							<h2>StaRace</h2>
-						</div>
-						<div>
-							<h2>ANIAH - Optimisation de structure de données en C</h2>
-						</div>
-						<div>
-							<h2>ST Microelectronics - Développeur IT</h2>
+							<button id="prevProject" style="font-size: 2rem">&#8592;</button>
+							<button id="nextProject" style="font-size: 2rem">&#8594;</button>
 						</div>
 					</div>
 				</div>
@@ -134,24 +154,24 @@
 					<span class="close-btn closeModalBtn">&times;</span>
 				</div>
 				<div class="modal-body">
-					<div style="display: block;">
+					<div style="display: block">
 						<div>
 							<h2>Langages de programmation</h2>
-							<div style="display: flex;">
+							<div style="display: flex">
 								<div class="comp-logo-grid">
-									<img src="assets/img/C.png" alt="C logo">
+									<img src="assets/img/C.png" alt="C logo" />
 									<p>C</p>
 								</div>
 								<div class="comp-logo-grid">
-									<img src="assets/img/CPP.png" alt="C++ logo">
+									<img src="assets/img/CPP.png" alt="C++ logo" />
 									<p>C++</p>
 								</div>
 								<div class="comp-logo-grid">
-									<img src="assets/img/CSharp.png" alt="C# logo">
+									<img src="assets/img/CSharp.png" alt="C# logo" />
 									<p>C#</p>
 								</div>
 								<div class="comp-logo-grid">
-									<img src="assets/img/JAVA.png" alt="Java logo">
+									<img src="assets/img/JAVA.png" alt="Java logo" />
 									<p>Java</p>
 								</div>
 							</div>

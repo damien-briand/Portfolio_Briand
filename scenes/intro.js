@@ -6,7 +6,6 @@
 */
 
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -14,7 +13,6 @@ import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 import { loadGLTF } from "../script/gltf_loader.js";
-import { HDRI_Loader } from "../script/hdri_loader.js";
 import { transitionToHUB } from "../main.js";
 import { hub_scene } from "./hub.js";
 

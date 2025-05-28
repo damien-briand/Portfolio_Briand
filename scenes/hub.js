@@ -16,13 +16,6 @@ import { DotScreenShader } from "../shaders/DotScreenShader.js";
 import { loadGLTF } from "../script/gltf_loader.js";
 import { HDRI_Loader } from "../script/hdri_loader.js";
 
-const CUBE_NAME = [
-	"Cube003_3",
-	"Cube005_1",
-	"Cube089",
-	"Cube001_1",
-	"Cube038_1",
-];
 const MATERIAL_NAME = ["ME", "PROJECT", "COMP", "ETUDE", "CONTACT"];
 
 async function hub_scene() {
@@ -53,6 +46,7 @@ async function hub_scene() {
 	const composer = new EffectComposer(renderer);
 
 	// Interaction Mouse Declaration
+	let raycastEnabled = true;
 	let raycaster = new THREE.Raycaster();
 	let INTERSECTED;
 	let pointer = new THREE.Vector2();
@@ -106,7 +100,7 @@ async function hub_scene() {
 	const effect3 = new OutputPass();
 	composer.addPass(effect3);
 
-	//
+	// --- Reglages de la caméra ---
 	window.addEventListener("resize", onWindowResize);
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -116,48 +110,96 @@ async function hub_scene() {
 		composer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	//const modal = document.getElementById("modal");
-	let modal = document.getElementById("ME");
-	const closeModalBtn = document.getElementsByClassName("closeModalBtn");
-	document.addEventListener("click", onBoxClick);
-	function onBoxClick() {
-		let findName = MATERIAL_NAME.find(
-			(name) => name === INTERSECTED.material.name
-		);
-		if (INTERSECTED.isMesh && findName != undefined) {
-			modal = document.getElementById(INTERSECTED.material.name);
-			modal.style.display = "block";
-		}
+	// --- Gestion des modals ---
+	function centerModal(modal) {
+		const windowWidth = window.innerWidth;
+		const windowHeight = window.innerHeight;
+		const modalWidth = modal.offsetWidth;
+		const modalHeight = modal.offsetHeight;
+		modal.style.left = `${(windowWidth - modalWidth) / 4}px`;
+		modal.style.top = `${(windowHeight - modalHeight) / 4}px`;
 	}
 
-	for (let i = 0; i < closeModalBtn.length; i++) {
-		closeModalBtn[i].addEventListener("click", () => {
-			modal.style.display = "none";
+	function openModal(modal) {
+		centerModal(modal);
+		modal.style.display = "block";
+	}
+
+	function closeModal(modal) {
+		modal.style.display = "none";
+	}
+
+	// Ajout des listeners sur tous les boutons de fermeture
+	document.querySelectorAll(".closeModalBtn").forEach((btn) => {
+		btn.addEventListener("click", (e) => {
+			const modal = btn.closest(".modal");
+			closeModal(modal);
 		});
-	}
-
-	// Rendre la fenêtre modale déplaçable
-	const allModalsHeader = document.getElementsByClassName("modal-header");
-	let isDragging = false;
-	let offsetX, offsetY;
-
-	for (let i = 0; i < allModalsHeader.length; i++) {
-		allModalsHeader[i].addEventListener("mousedown", (e) => {
-			isDragging = true;
-			offsetX = e.clientX - modal.offsetLeft;
-			offsetY = e.clientY - modal.offsetTop;
-		});
-	}
-
-	document.addEventListener("mousemove", (e) => {
-		if (isDragging) {
-			modal.style.left = `${e.clientX - offsetX}px`;
-			modal.style.top = `${e.clientY - offsetY}px`;
-		}
 	});
 
+	// Gestion du drag & drop pour tous les modals
+	let isDragging = false,
+		offsetX = 0,
+		offsetY = 0,
+		currentModal = null;
+	document.querySelectorAll(".modal-header").forEach((header) => {
+		header.addEventListener("mousedown", (e) => {
+			currentModal = header.closest(".modal");
+			isDragging = true;
+			offsetX = e.clientX - currentModal.offsetLeft;
+			offsetY = e.clientY - currentModal.offsetTop;
+		});
+	});
+	document.addEventListener("mousemove", (e) => {
+		if (isDragging && currentModal) {
+			currentModal.style.left = `${e.clientX - offsetX}px`;
+			currentModal.style.top = `${e.clientY - offsetY}px`;
+		}
+
+		const elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
+		if (
+			elementUnderMouse &&
+			elementUnderMouse.closest(".modal") &&
+			elementUnderMouse.closest(".modal").style.display === "block"
+		) {
+			raycastEnabled = false;
+			raycaster = new THREE.Raycaster();
+			document.body.style.cursor = "default";
+		} else {
+			raycastEnabled = true;
+		}
+	});
 	document.addEventListener("mouseup", () => {
 		isDragging = false;
+		currentModal = null;
+	});
+
+	// --- Affichage du modal au clic sur un objet ---
+	document.addEventListener("click", onBoxClick);
+
+	function onBoxClick(e) {
+		// Si le clic est sur un modal, on ne fait rien
+		if (
+			e.target.closest(".modal") &&
+			e.target.closest(".modal").style.display === "block"
+		) {
+			return;
+		}
+		if (!INTERSECTED || !INTERSECTED.isMesh) return;
+		const findName = MATERIAL_NAME.find(
+			(name) => name === INTERSECTED.material.name
+		);
+		if (findName) {
+			const modal = document.getElementById(INTERSECTED.material.name);
+			if (modal) openModal(modal);
+		}
+	}
+
+	// Empêche la propagation du clic sur les modals
+	document.querySelectorAll(".modal").forEach((modal) => {
+		modal.addEventListener("click", (e) => {
+			e.stopPropagation();
+		});
 	});
 
 	const buttonMenu = document.getElementById("menu-button");
@@ -176,32 +218,33 @@ async function hub_scene() {
 			currentAngle += (targetAngle - currentAngle) * rotationSpeed;
 			rotationCameraReg(camera, currentAngle);
 		}
-		raycaster.setFromCamera(pointer, camera);
-		const intersects = raycaster.intersectObjects(scene.children, true);
+		if (raycastEnabled) {
+			raycaster.setFromCamera(pointer, camera);
+			const intersects = raycaster.intersectObjects(scene.children, true);
 
-		if (intersects.length > 0) {
-			if (INTERSECTED != intersects[0].object) {
-				if (INTERSECTED && INTERSECTED.isMesh)
+			if (intersects.length > 0) {
+				if (INTERSECTED != intersects[0].object) {
+					if (INTERSECTED && INTERSECTED.isMesh)
+						INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+
+					INTERSECTED = intersects[0].object;
+					let findName = MATERIAL_NAME.find(
+						(name) => name === INTERSECTED.material.name
+					);
+					if (findName != undefined) {
+						document.body.style.cursor = "pointer";
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+						INTERSECTED.material.emissive.setHex(0xffffff);
+					}
+				}
+			} else {
+				if (INTERSECTED && INTERSECTED.isMesh) {
+					document.body.style.cursor = "auto";
 					INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
-
-				INTERSECTED = intersects[0].object;
-				let findName = MATERIAL_NAME.find(
-					(name) => name === INTERSECTED.material.name
-				);
-				if (findName != undefined) {
-					document.body.style.cursor = "pointer";
-					INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-					INTERSECTED.material.emissive.setHex(0xffffff);
+					INTERSECTED = null;
 				}
 			}
-		} else {
-			if (INTERSECTED && INTERSECTED.isMesh) {
-				document.body.style.cursor = "auto";
-				INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
-				INTERSECTED = null;
-			}
 		}
-
 		composer.render();
 	}
 

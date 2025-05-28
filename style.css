@@ -222,8 +222,8 @@ body {
 	position: absolute;
 	top: 50px;
 	left: 50px;
-	width: 40rem;
-	height: 26rem;
+	width: 60rem;
+	height: 40rem;
 	background-color: white;
 	border: 1px solid #ccc;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -240,8 +240,9 @@ body {
 }
 
 .modal-body {
-	padding: 10px;
+	padding: 5px;
 	display: flex;
+	font-size: 1.2rem;
 }
 
 .modal-body img {
@@ -276,4 +277,26 @@ body {
 	height: 100px;
 	object-fit: contain;
 	margin: 10px;
+}
+
+/*------ CARROUSELLE ------*/
+.carrouselle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	flex-direction: column;
+}
+
+.carrouselle img {
+	width: 98%;
+	object-fit: contain;
+	margin: 5px;
+}
+
+.carrouselle div {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	grid-template-columns: auto auto auto;
 }
