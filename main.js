@@ -16,6 +16,7 @@ function transitionToIntro(callback) {
 
 function transitionToHUB(callback) {
     document.getElementById("hub").style.display = "flex";
+    document.getElementById("transition-screen").style.display = "flex";
     document.getElementById("intro").style.display = "none";
 
     const topBar = document.querySelector(".top-bar");

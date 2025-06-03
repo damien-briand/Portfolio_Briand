@@ -17,6 +17,13 @@ body {
 	width: 6%;
 }
 
+.nav-bar-star img:hover {
+	cursor: pointer;
+	opacity: 0.8;
+	rotate: -90deg;
+	transition: all 0.3s ease-in-out;
+}
+
 .star-line {
 	width: inherit;
 	border-bottom: 0.3em solid #e00000;

@@ -117,7 +117,6 @@ async function intro_scene() {
 
 	document.addEventListener("click", onIntersect);
 	function onIntersect() {
-		console.log("click");
 		if (INTERSECTED.isMesh && INTERSECTED.name === "Power_PC") {
 			transitionToHUB(() => {
 				hub_scene();

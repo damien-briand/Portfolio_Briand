@@ -15,6 +15,8 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { DotScreenShader } from "../shaders/DotScreenShader.js";
 import { loadGLTF } from "../script/gltf_loader.js";
 import { HDRI_Loader } from "../script/hdri_loader.js";
+import { transitionToIntro } from "../main.js";
+import { intro_scene } from "./intro.js";
 
 const MATERIAL_NAME = ["ME", "PROJECT", "COMP", "ETUDE", "CONTACT"];
 
@@ -205,13 +207,15 @@ async function hub_scene() {
 	const buttonMenu = document.getElementById("menu-button");
 	buttonMenu.addEventListener("click", () => {
 		const osMenu = document.getElementById("os-menu");
-		console.log(osMenu.style.display);
 		if (osMenu.style.display === "none" || osMenu.style.display === "") {
 			osMenu.style.display = "block";
 		} else {
 			osMenu.style.display = "none";
 		}
 	});
+
+	const buttonPowerOff = document.getElementById("power-off-button");
+	buttonPowerOff.addEventListener("click", onPowerOff);
 
 	function animate() {
 		if (Math.abs(targetAngle - currentAngle) > 0.01) {
@@ -224,23 +228,39 @@ async function hub_scene() {
 
 			if (intersects.length > 0) {
 				if (INTERSECTED != intersects[0].object) {
-					if (INTERSECTED && INTERSECTED.isMesh)
-						INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+					if (INTERSECTED && INTERSECTED.isMesh) {
+						// Restaure l'emissive initiale si elle existe
+						if (INTERSECTED.initialEmissive !== undefined) {
+							INTERSECTED.material.emissive.setHex(INTERSECTED.initialEmissive);
+						}
+					}
 
 					INTERSECTED = intersects[0].object;
-					let findName = MATERIAL_NAME.find(
-						(name) => name === INTERSECTED.material.name
-					);
-					if (findName != undefined) {
-						document.body.style.cursor = "pointer";
-						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-						INTERSECTED.material.emissive.setHex(0xffffff);
+
+					if (INTERSECTED.isMesh) {
+						// Sauvegarde l'état initial de l'emissive si ce n'est pas déjà fait
+						if (INTERSECTED.initialEmissive === undefined) {
+							INTERSECTED.initialEmissive =
+								INTERSECTED.material.emissive.getHex();
+						}
+
+						const findName = MATERIAL_NAME.find(
+							(name) => name === INTERSECTED.material.name
+						);
+
+						if (findName !== undefined) {
+							document.body.style.cursor = "pointer";
+							INTERSECTED.material.emissive.setHex(0xffffff);
+						}
 					}
 				}
 			} else {
 				if (INTERSECTED && INTERSECTED.isMesh) {
-					document.body.style.cursor = "auto";
-					INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+					// Restaure l'emissive initiale si elle existe
+					if (INTERSECTED.initialEmissive !== undefined) {
+						INTERSECTED.material.emissive.setHex(INTERSECTED.initialEmissive);
+					}
+					document.body.style.cursor = "default";
 					INTERSECTED = null;
 				}
 			}
@@ -251,6 +271,17 @@ async function hub_scene() {
 	addEventListener("keypress", () => {
 		targetAngle += 0.4 * Math.PI; // Augmente l'angle cible
 	});
+
+	function onPowerOff() {
+		document.removeEventListener("click", onBoxClick);
+		document.removeEventListener("mousemove", onMouseMouve);
+		const osMenu = (document.getElementById("os-menu").style.display = "none");
+		scene.clear();
+		document.body.querySelector("canvas").remove();
+		transitionToIntro(() => {
+			intro_scene();
+		});
+	}
 }
 
 function rotationCameraReg(camera, angle) {
