@@ -17,7 +17,7 @@
 			}
 		</script>
 		<script type="module" src="main.js"></script>
-		<script type="module" src="/script/carrouselle.js"></script>
+		<script type="module" src="/Portfolio_Briand/script/carrouselle.js"></script>
 
 		<div id="intro">
 			<div id="loading-screen">
@@ -71,12 +71,12 @@
 					<span>ME.exe</span>
 					<span class="close-btn closeModalBtn">&times;</span>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" style="display: flex">
 					<div style="display: contents">
 						<img
 							src="/assets/img/me_picture.jpg"
 							alt="ma photo"
-							style="width: 35%"
+							style="width: 100%"
 						/>
 					</div>
 					<div style="margin-left: 3%; font-size: 1.5rem">
@@ -119,19 +119,33 @@
 						<div class="carrousel-items">
 							<div>
 								<h2>Enigmatique</h2>
-								<p>Le wati projet</p>
 								<div>
-									<img src="/assets/img/Laboratory.png" alt="">
-									<img src="/assets/img/Reactor.png" alt="">
-									<img src="/assets/img/Laboratory.png" alt="">
+									<img src="/assets/img/Laboratory.png" alt="" />
+									<img src="/assets/img/Reactor.png" alt="" />
+									<img src="/assets/img/Reactor2.png" alt="" />
+									<img src="/assets/img/interfaceEnig1.jpg" alt="" />
+									<img src="/assets/img/InterfaceEnig2.jpg" alt="" />
+									<img src="/assets/img/interfaceEnig3.jpg" alt="" />
 								</div>
+								<h3>Présentation</h3>
+								<p>
+									Enigmatique est un projet universitaire réalisé en
+									<strong>deuxiéme année de BUT Informatique</strong>. 
+									Il s'agit d'un jeu de réflexion, escape game,
+									ou un professeur créé une partie de jeu et invite ses élèves
+									à y participer. Le but est de résoudre des énigmes pour sortir
+									de la salle virtuelle.
+								</p>
+								<p> 
+									Le jeu a était fait en 3D avec ThreeJS. Les élèves doivent
+									résoudre des énigmes en interagissant avec les objets de la
+									salle. 
+								</p>
 							</div>
 							<div>
 								<h2>L'Incroyable Aventure a l'IUT2</h2>
 								<p></p>
-								<div>
-									
-								</div>
+								<div></div>
 							</div>
 							<div>
 								<h2>StaRace</h2>
@@ -143,11 +157,11 @@
 								<h2>ST Microelectronics - Développeur IT</h2>
 							</div>
 						</div>
-						<div>
-							<button id="prevProject" style="font-size: 2rem">&#8592;</button>
-							<button id="nextProject" style="font-size: 2rem">&#8594;</button>
-						</div>
 					</div>
+				</div>
+				<div style="display: flex; justify-content: center; background-color: #f1f1f1;">
+					<button id="prevProject" style="font-size: 2rem">&#8592;</button>
+					<button id="nextProject" style="font-size: 2rem">&#8594;</button>
 				</div>
 			</div>
 

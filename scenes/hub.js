@@ -118,8 +118,8 @@ async function hub_scene() {
 		const windowHeight = window.innerHeight;
 		const modalWidth = modal.offsetWidth;
 		const modalHeight = modal.offsetHeight;
-		modal.style.left = `${(windowWidth - modalWidth) / 4}px`;
-		modal.style.top = `${(windowHeight - modalHeight) / 4}px`;
+		modal.style.left = `${(windowWidth - modalWidth) / 8}px`;
+		modal.style.top = `${(windowHeight - modalHeight) / 8}px`;
 	}
 
 	function openModal(modal) {
