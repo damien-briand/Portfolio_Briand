@@ -67,7 +67,7 @@ async function hub_scene() {
 	let model;
 	let mixer;
 	try {
-		model = await loadGLTF("/assets/OS_HUB_scene.glb", scene);
+		model = await loadGLTF("/Portfolio_Briand/assets/OS_HUB_scene.glb", scene);
 		model.traverse((child) => {
 			if (child.isMesh) {
 				model.receiveShadow = true;
