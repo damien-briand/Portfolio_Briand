@@ -19,11 +19,12 @@ import { transitionToIntro } from "../main.js";
 import { intro_scene } from "./intro.js";
 
 const MATERIAL_NAME = ["ME", "PROJECT", "COMP", "ETUDE", "CONTACT"];
+const RADIUS_CAMERA = 2;
 
 async function hub_scene() {
 	let camera;
 
-	let currentAngle = 0; // Angle actuel
+	let currentAngle = Math.PI; // Angle actuel
 	let targetAngle = 0; // Angle cible
 	const rotationSpeed = 0.03; // Vitesse de l'animation
 
@@ -41,9 +42,6 @@ async function hub_scene() {
 		1,
 		1000
 	);
-	camera.position.z = 21;
-	camera.position.y = 3;
-	camera.lookAt(0, 3, 0); // Oriente la caméra vers le centre
 
 	const composer = new EffectComposer(renderer);
 
@@ -67,7 +65,7 @@ async function hub_scene() {
 	let model;
 	let mixer;
 	try {
-		model = await loadGLTF("/Portfolio_Briand/assets/OS_HUB_scene.glb", scene);
+		model = await loadGLTF("../assets/OS_HUB_scene.glb", scene);
 		model.traverse((child) => {
 			if (child.isMesh) {
 				model.receiveShadow = true;
@@ -81,6 +79,10 @@ async function hub_scene() {
 	} catch (error) {
 		console.error("An error happened", error);
 	}
+
+	camera.position.z = RADIUS_CAMERA;
+	camera.position.y = 3;
+	//camera.rotateY(Math.PI); 
 
 	scene.add(new THREE.AmbientLight(0xcccccc));
 	const gridHelper = new THREE.GridHelper(100, 50, 0xff0000, 0x00ff00);
@@ -285,10 +287,16 @@ async function hub_scene() {
 }
 
 function rotationCameraReg(camera, angle) {
-	const radius = 21; // Rayon de la rotation
+	const radius = RADIUS_CAMERA; // Rayon de la rotation
 	camera.position.x = Math.sin(angle) * radius;
 	camera.position.z = Math.cos(angle) * radius;
-	camera.lookAt(0, 3, 0); // Oriente la caméra vers le centre
+
+    camera.lookAt(
+        Math.sin(angle) * (radius * 2),
+        camera.position.y,
+        Math.cos(angle) * (radius * 2)
+    );
+
 	camera.updateProjectionMatrix();
 }
 
