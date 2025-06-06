@@ -76,7 +76,6 @@ async function intro_scene() {
 				camera.updateProjectionMatrix();
 			}
 		});
-		mixer = new THREE.AnimationMixer(model);
 	} catch (error) {
 		console.error("Fail to load GLTF : ", error);
 	}
@@ -124,6 +123,9 @@ async function intro_scene() {
 			document.removeEventListener("click", onIntersect);
 			window.removeEventListener("mousemove", onMouseMouve);
 		}
+		if (INTERSECTED.isMesh && INTERSECTED.material.name === "Rasp"){
+			window.location.href = "/pages/galerie.html";
+		}
 	}
 
 	let powerPCMesh;
@@ -141,18 +143,37 @@ async function intro_scene() {
 
 		if (intersects.length > 0) {
 			if (INTERSECTED != intersects[0].object) {
-				INTERSECTED = intersects[0].object;
-				if (INTERSECTED.isMesh && INTERSECTED.name === "Power_PC") {
-					powerPCMesh = INTERSECTED;
-					if (powerPCMeshMaterial == undefined) {
-						powerPCMeshMaterial = powerPCMesh.material;
+				if (INTERSECTED && INTERSECTED.isMesh) {
+					// Restaure l'emissive initiale si elle existe
+					if (INTERSECTED.initialEmissive !== undefined) {
+						INTERSECTED.material.emissive.setHex(INTERSECTED.initialEmissive);
 					}
-					powerPCMesh.material = new THREE.MeshStandardMaterial({
-						color: 0x00ff00,
-						roughness: 0.6,
-						metalness: 0.1,
-					});
 				}
+
+				INTERSECTED = intersects[0].object;
+
+				if (INTERSECTED.isMesh) {
+					// Sauvegarde l'état initial de l'emissive si ce n'est pas déjà fait
+					if (INTERSECTED.initialEmissive === undefined) {
+						INTERSECTED.initialEmissive =
+							INTERSECTED.material.emissive.getHex();
+					}
+
+					if (INTERSECTED.name === "Power_PC" || INTERSECTED.material.name === "Rasp") {
+						document.body.style.cursor = "pointer";
+						INTERSECTED.material.emissive.setHex(0x00ff00);
+					} else {
+						document.body.style.cursor = "default";
+					}
+				}
+			}
+		} else {
+			if (INTERSECTED && INTERSECTED.isMesh) {
+				if (INTERSECTED.initialEmissive !== undefined) {
+					INTERSECTED.material.emissive.setHex(INTERSECTED.initialEmissive);
+				}
+				document.body.style.cursor = "default";
+				INTERSECTED = null;
 			}
 		}
 
