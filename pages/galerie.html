@@ -6,6 +6,33 @@
         <link rel="stylesheet" href="galerie.css" />
 		<title>Ma Galerie 3D</title>
 	</head>
+    <script>
+        // Quand on clique sur une div de la galerie l'image s'affiche en grand sur l'écran
+        document.addEventListener("DOMContentLoaded", function() {
+            const galerieItems = document.querySelectorAll(".galerie-item img");
+            galerieItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    const src = this.getAttribute("src");
+                    const fullImage = document.createElement("img");
+                    fullImage.src = src;
+                    fullImage.style.position = "fixed";
+                    fullImage.style.top = "50%";
+                    fullImage.style.left = "50%";
+                    fullImage.style.transform = "translate(-50%, -50%)";
+                    fullImage.style.zIndex = "1000";
+                    fullImage.style.maxWidth = "90%";
+                    fullImage.style.maxHeight = "90%";
+                    
+                    document.body.appendChild(fullImage);
+                    
+                    fullImage.addEventListener("click", function() {
+                        document.body.removeChild(fullImage);
+                    });
+                });
+            });
+        });
+        
+    </script>
 	<body>
         <div id="nav-bar">
             <a href="../index.html">&#x2B9C; Retour</a>
@@ -13,16 +40,48 @@
 
         <div id="galerie-container">
             <div class="galerie-item">
-                <img src="../assets/img/galerie/image1.jpg" alt="Image 1" />
-                <p>Description de l'image 1</p>
+                <img src="../assets/galerie/0280.png" alt="Image 1" />
+                <p>Rose Mécanique</p>
             </div>
             <div class="galerie-item">
-                <img src="../assets/img/galerie/image2.jpg" alt="Image 2" />
-                <p>Description de l'image 2</p>
+                <img src="../assets/galerie/BrainCell_Project.png" alt="Image 1" />
+                <p>Project BrainCell</p>
             </div>
             <div class="galerie-item">
-                <img src="../assets/img/galerie/image3.jpg" alt="Image 3" />
-                <p>Description de l'image 3</p>
+                <img src="../assets/galerie/BureauHell.png" alt="Image 1" />
+                <p>Hell's Paradise</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/Great_Rose.png" alt="Image 1" />
+                <p>Rose Noire</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/LetsMeShine.png" alt="Image 1" />
+                <p>Let Me Shine One More Time</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/Luceat.png" alt="Image 1" />
+                <p>Luceat</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/TechTel.png" alt="Image 1" />
+                <p>NewTech</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/Welcom2.png" alt="Image 1" />
+                <p>Lost Where</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/Welcome.png" alt="Image 1" />
+                <p>Castle Day</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/WIP_Hotel.002.png" alt="Image 1" />
+                <p>Strange Hotel</p>
+            </div>
+            <div class="galerie-item">
+                <img src="../assets/galerie/WIP_Hotel.png" alt="Image 1" />
+                <p>Strange Hotel</p>
             </div>
         </div>
     </body>
